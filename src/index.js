@@ -1,25 +1,24 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
 
+const {
+  UserRoute,
+} = require('./routes');
 const { getDbService } = require('./services');
 
 getDbService();
 const app = express();
 const port = process.env.PORT || 8080;
 
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-);
+app.use(express.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
   res.json({'message': 'ok'});
 });
+
+app.use('/users', UserRoute);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {
